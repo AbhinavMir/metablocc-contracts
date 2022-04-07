@@ -28,4 +28,11 @@ contract tenantUser
         // _setProof() per user and NFT
         // set NFT to off market
     }
+
+    function sell()
+    {
+        // require() pNFT valid
+        // burn() user pNFT
+        // changeStatus() to offMarket + address original 
+    }
 }
