@@ -12,7 +12,7 @@ interface mintingTokenInterface
 
     struct NFTattributes{
         address _userAddress;
-        bytes32 _collectionName;
+        string _collectionName;
         bytes32 _symbol;
         bytes32 _tokenURI;
         address _collectionAddress;
@@ -64,7 +64,7 @@ contract mintingToken is ERC721, ERC721URIStorage, Ownable, mintingTokenInterfac
     }
 
     function _setProof(
-        address _userAddress, bytes32 _collectionName, bytes32 _symbol, bytes32 _tokenURI, uint _rent, uint _duration, uint _collateral, uint _tokenId, address _staker, address _collectionAddress) internal {
+        address _userAddress, string memory _collectionName, bytes32 _symbol, bytes32 _tokenURI, uint _rent, uint _duration, uint _collateral, uint _tokenId, address _staker, address _collectionAddress) internal {
         safeMint(_userAddress);
         NFTattributes memory proof = NFTattributes
                                         (_userAddress,
@@ -120,10 +120,14 @@ contract mintingToken is ERC721, ERC721URIStorage, Ownable, mintingTokenInterfac
         emit StatusChanged(_tokenId, _newState);
     }
 
-    function transferOwnershipOfToken(uint _tokenId, address _newOwner) internal onlyOwner {
+    function _transferOwnershipOfToken(uint _tokenId, address _newOwner) internal onlyOwner {
         require(_tokenId<=_proofCounter.current());
 
         _NFTproofs[_tokenId]._userAddress = _newOwner;
         emit ProofOwnerChanged(_tokenId, _newOwner);
+    }
+
+    function currentTokenID() public view returns(uint) {
+        return _tokenIdCounter.current();
     }
 }
